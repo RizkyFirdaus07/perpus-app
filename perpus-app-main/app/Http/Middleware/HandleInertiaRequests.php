@@ -31,11 +31,15 @@ class HandleInertiaRequests extends Middleware
     {
         return [
             ...parent::share($request),
-            'auth' => [
-                'user' => $request->user(),
-            ],
-            'flash' => [
-                'success' => fn () => $request->session()->get('success'),
+ 'auth' => [
+ 'user' => $request->user(),
+ ],
+ // Blok baru: membagikan pesan flash ke SELURUH halaman Vue secara otomatis
+ 'flash' => [
+ // session('success') membaca pesan yang dikirim lewat ->with('success', ...)
+ // pada Langkah 2 dan 4; bernilai null apabila tidak ada pesan
+ 'success' => session('success'),
+
             ],
         ];
     }
